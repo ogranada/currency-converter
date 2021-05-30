@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A simple currency converter",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ogranada/currency-converter.git"
+  },
   "scripts": {
     "dev": "parcel index.html",
     "build": "parcel build index.html",
