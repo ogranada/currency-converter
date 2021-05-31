@@ -1,16 +1,13 @@
+import 'regenerator-runtime/runtime';
 
-function getCard() {
-  const template = document.getElementById('currencyChangeTemplate');
-  const clone = document.importNode(template.content, true);
-  return clone.querySelector('.CurrencyChanger');
-}
+import { CurrencyCard } from "./currency-card";
 
 function main() {
   const container = document.querySelector('.ContentWrapper-content');
   document.querySelector('.addCurrency').addEventListener('click', () => {
-    const card = getCard();
-    container.appendChild(card);
+    new CurrencyCard(container);
   });
+  const initialCard = new CurrencyCard(container);
 }
 
 main();

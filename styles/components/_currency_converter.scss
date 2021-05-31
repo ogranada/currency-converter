@@ -1,0 +1,130 @@
+.CurrencyChanger {
+  position: relative;
+  min-height: 4em;
+
+  &-wrapper {
+    padding: em(16);
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(150, 150, 150, .2);
+    border-radius: em(5);
+    backdrop-filter: blur(5px);
+  }
+
+  &-action {
+    font-size: em(18);
+    background-color: transparent;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    height: 2em;
+    line-height: 1em;
+    &:active {
+      background-color: rgba(0,0,0,0.1);
+      border-color: rgba(0,0,0,0.2);
+      border-radius: em(5);
+    }
+  }
+
+  &-source, &-target {
+    flex-basis: 42%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &-currencyInput {
+    padding: em(4) em(8);
+    margin-top: em(8);
+    display: inline-block;
+    width: 100%;
+  }
+
+  &-header {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-headerTitle {
+    line-height: 2.5em;
+  }
+
+  &-footer {
+    padding-top: 1em;
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  &-currencyTypeSection {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  &-currencySelector {
+    padding: em(4) em(8);
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 50%;
+    flex-grow: 2;
+    border: var(--bg-4);
+    border-radius: 3px;
+    font-size: 1em;
+    line-height: 1em;
+  }
+
+  &-imageWraper {
+    max-height: 2em;
+  }
+
+  &-currencyImage {
+    flex-grow: 1;
+    width: em(40);
+    margin: 0 em(4);
+    margin-top: em(-4);
+    &[src=""] {
+      margin: 0;
+    }
+  }
+
+  & input, & select {
+    height: 2em;
+    border: var(--bg-4);
+    outline-color: var(--contrast-5);
+    outline-offset: -1px;
+  }
+
+  @media screen and (min-width: 728px) {
+    max-width: em(350);
+    margin: 1em;
+  }
+
+  @media screen and (min-width: 1024px) {
+    max-width: em(450);
+    margin: 0.2em;
+    &-source, &-target {
+      flex-basis: 45%;
+    }
+  }
+}
+
+@include darkModeScope {
+  .CurrencyChanger {
+    &-action {
+      color: white;
+    }
+    &::before {
+      background-color: rgba(255, 255, 255, .2);
+    }
+  }
+}
