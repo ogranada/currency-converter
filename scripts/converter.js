@@ -40,13 +40,16 @@ export class Converter extends APIManager {
       const euroToCurrency = await this.getInfo(dateValue ? `/${dateValue}` : '/latest', {
         symbols: `${from},${to}`
       });
-      const oneEuroInSourceCurrency = euroToCurrency.rates[from];
-      const oneEuroInTargetCurrency = euroToCurrency.rates[to];
+      const oneEuroInSourceCurrency = euroToCurrency.rates[from] || 0;
+      const oneEuroInTargetCurrency = euroToCurrency.rates[to] || 0;
       // if N <from currency> is eq. to 1 Euro and 1 Euro is eq. to M <to currency>
       //    so N <from currency> is equiv. to M <to currency>
       // if N <from currency> is equiv. to M <to currency>
       //    <amount> <from currency> is equiv. to:
-      const transformed = (amount * oneEuroInTargetCurrency / oneEuroInSourceCurrency);
+
+      const transformed = oneEuroInSourceCurrency > 0 // Avoid Infinity value caused by zero division
+        ? (amount * oneEuroInTargetCurrency / oneEuroInSourceCurrency)
+        : 0;
       return {
         source: {
           name: from,
@@ -57,7 +60,7 @@ export class Converter extends APIManager {
           value: oneEuroInTargetCurrency
         },
         amount,
-        result: transformed // to truncate without round the value
+        result: transformed
       }
     } catch (error) {
       console.log(error);

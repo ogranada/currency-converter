@@ -1,6 +1,8 @@
 import { Converter } from "./converter";
+import { debounce } from "./utils";
 
 export class CurrencyCard {
+
   // Statics
   static template = null;
 
@@ -35,6 +37,9 @@ export class CurrencyCard {
   /** @type {HTMLSelectElement} */
   selectTargetCurrency = null;
 
+  // expressed methods
+  calculateResults = debounce((event) => this.doCurrencyCalculations(event), 100);
+
   /**
    *
    * @param {HTMLElement} parentNode place where the node will be inserted.
@@ -62,7 +67,7 @@ export class CurrencyCard {
     this.txtTargetCurrency = this.node.querySelector('.CurrencyChanger-currencyInput.target');
     this.txtSearchDate = this.node.querySelector('.CurrencyChanger-searchDate');
     const date = new Date();
-    const currentDate = date.toISOString().substring(0, 10);
+    const currentDate = date.toISOString().substring(0,10);
     this.txtSearchDate.value = currentDate;
     Object.keys(this.converter.validExchanges).forEach(currency => {
       const op1 = document.createElement('option');
@@ -86,9 +91,11 @@ export class CurrencyCard {
       { widget: this.txtSourceCurrency, event: 'input' },
       { widget: this.txtTargetCurrency, event: 'input' },
     ];
-    uiElements.forEach(({ widget, event }) => {
+    uiElements.forEach(({widget, event}) => {
       widget.addEventListener(event, (e) => {
-        this.updateValues(e);
+        setTimeout(() => {
+          this.updateValues(e)
+        }, 100);
       });
     });
   }
@@ -124,13 +131,21 @@ export class CurrencyCard {
    * @param {HTMLElement} uiElement
    */
   setUIValues(values, uiElement) {
-    console.trace('setUIValues');
-    console.log(values, uiElement);
-    this.selectSourceCurrency.value = values.sourceCurrency;
-    this.txtSourceCurrency.value = values.sourceCurrencyValue;
-    this.selectTargetCurrency.value = values.targetCurrency;
-    this.txtTargetCurrency.value = values.targetCurrencyValue;
-    this.txtSearchDate.value = values.searchDate;
+    if (uiElement !== this.selectSourceCurrency) {
+      this.selectSourceCurrency.value = values.sourceCurrency;
+    }
+    if (uiElement !== this.txtSourceCurrency) {
+      this.txtSourceCurrency.value = values.sourceCurrencyValue;
+    }
+    if (uiElement !== this.selectTargetCurrency) {
+      this.selectTargetCurrency.value = values.targetCurrency;
+    }
+    if (uiElement !== this.txtTargetCurrency) {
+      this.txtTargetCurrency.value = values.targetCurrencyValue;
+    }
+    if (uiElement !== this.txtSearchDate) {
+      this.txtSearchDate.value = values.searchDate;
+    }
   }
 
   getCurrentInputValues() {
@@ -151,8 +166,31 @@ export class CurrencyCard {
   }
 
   async doCurrencyCalculations(event) {
-    this.lastChanged = event.currentTarget;
-    // TODO: code logic here...
+    const uiElement = event.currentTarget || event.target;
+    const sources = [this.selectSourceCurrency, this.txtSourceCurrency];
+    const targets = [this.selectTargetCurrency, this.txtTargetCurrency];
+    const others = [this.txtSearchDate];
+    const values = this.getCurrentInputValues();
+    if (sources.includes(uiElement)) {
+      const { sourceCurrencyValue, targetCurrencyValue, sourceCurrency, targetCurrency, searchDate } = values;
+      const conversion = await this.converter.convert(sourceCurrency, sourceCurrencyValue, targetCurrency, targetCurrencyValue, searchDate);
+      if (conversion) {
+        values.targetCurrencyValue = conversion.result;
+        this.setUIValues(values, uiElement);
+      }
+    } else if (targets.includes(uiElement)) {
+      const { sourceCurrencyValue, targetCurrencyValue, sourceCurrency, targetCurrency, searchDate } = values;
+      const conversion = await this.converter.convert(targetCurrency, targetCurrencyValue, sourceCurrency, sourceCurrencyValue, searchDate);
+      if (conversion) {
+        values.sourceCurrencyValue = conversion.result;
+        this.setUIValues(values, uiElement);
+      }
+    } else if (others.includes(uiElement)) {
+      if (!others.includes(this.lastChanged)) {
+        this.doCurrencyCalculations({currentTarget: this.lastChanged});
+      }
+    }
+    this.lastChanged = uiElement;
     this.updating = false;
   }
 
@@ -165,7 +203,7 @@ export class CurrencyCard {
       this.updating = true;
       const values = this.getCurrentInputValues();
       this.setUIImages(values);
-      this.doCurrencyCalculations(event)
+      this.calculateResults(event);
     }
   }
 
