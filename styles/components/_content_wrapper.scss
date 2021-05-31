@@ -1,0 +1,42 @@
+.ContentWrapper {
+  padding: 0.5em 1em;
+  &-title {
+    margin: 0 0 em(10) 0;
+    color: var(--gray-1);
+    text-align: center;
+    font-weight: normal;
+  }
+  &-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  &-textContent {
+    text-align: center;
+  }
+
+  @media screen and (min-width: 728px) {
+    margin-left: 5%;
+    width: 90%;
+
+    &-content {
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    margin-left: 10%;
+    width: 80%;
+  }
+
+}
+
+@include darkModeScope {
+  .ContentWrapper {
+    color: white;
+    &-title {
+      font-weight: normal;
+    }
+  }
+}

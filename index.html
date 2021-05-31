@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Currency Converter</title>
   <link rel="stylesheet" href="./styles/main.scss">
+  <link rel="stylesheet" href="./vendors/currency_changer_font/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Open+Sans+Condensed:wght@300&display=swap"
     rel="stylesheet">
 </head>
@@ -23,39 +24,80 @@
         <label aria-label="Toggle theme" role="checkbox" class="DarkmodeTrigger-label" for="darkmodeTrigger"></label>
       </nav>
     </header>
-    <section>
-      <div>
-        <span> Convertion card </span>
-        <button>
-          delete
-        </button>
+    <section class="ContentWrapper">
+      <h2 class="ContentWrapper-title">My conversions</h2>
+      <p class="ContentWrapper-textContent">
+        Create new convertion cards and define source or target amounts.
+        You can change the date to verify the rate in an specific moment.
+      </p>
+      <div class="ContentWrapper-content">
       </div>
-      <div>
-        <div>
-          <select>
-            <option value="" selected disabled> Currency </option>
-          </select>
-          <img src="https://www.countryflags.io/co/shiny/64.png">
-        </div>
-        <input type="number" placeholder="amount">
-      </div>
-      <button>
-        change
+      <button class="FloatingButton addCurrency">
+        <i class="cci-plus"></i>
       </button>
-      <div>
-        <div>
-          <img src="https://www.countryflags.io/an/shiny/64.png">
-          <select>
-            <option value="" selected disabled>Currency</option>
-          </select>
-        </div>
-        <input type="number" placeholder="amount">
-      </div>
-      <div>
-        <input type="date">
-      </div>
     </section>
+    <div>
+      <template id="currencyChangeTemplate">
+        <section class="CurrencyChanger">
+          <div class="CurrencyChanger-wrapper">
+            <div class="CurrencyChanger-header">
+              <span class="CurrencyChanger-headerTitle">...</span>
+              <button
+                class="CurrencyChanger-action CurrencyChanger-remove"
+                tabindex="7"
+              >
+                <i class="cci-trash-2"></i>
+              </button>
+            </div>
+            <div class="CurrencyChanger-source">
+              <div class="CurrencyChanger-currencyTypeSection">
+                <select class="CurrencyChanger-currencySelector source" tabindex="1">
+                  <option value="" selected disabled> Currency </option>
+                </select>
+                <span class="CurrencyChanger-imageWraper">
+                  <img class="CurrencyChanger-currencyImage source" src="">
+                </span>
+              </div>
+              <input
+                class="CurrencyChanger-currencyInput source"
+                type="number"
+                placeholder="amount"
+                tabindex="4"
+              >
+            </div>
+            <button
+              class="CurrencyChanger-action CurrencyChanger-revertCurrencies"
+              tabindex="3"
+            >
+              <i class="cci-repeat"></i>
+            </button>
+            <div class="CurrencyChanger-target">
+              <div class="CurrencyChanger-currencyTypeSection target">
+                <span class="CurrencyChanger-imageWraper">
+                  <img class="CurrencyChanger-currencyImage target" src="">
+                </span>
+                <select class="CurrencyChanger-currencySelector target" tabindex="2">
+                  <option value="" selected disabled>Currency</option>
+                </select>
+              </div>
+              <input
+                class="CurrencyChanger-currencyInput target"
+                type="number"
+                placeholder="amount"
+                tabindex="5"
+              >
+            </div>
+            <div class="CurrencyChanger-footer">
+              <input type="date" class="CurrencyChanger-searchDate" tabindex="6">
+            </div>
+          </div>
+        </section>
+      </template>
+    </div>
   </main>
+
+
+  <script src="./scripts/main.js"></script>
 </body>
 
 </html>
