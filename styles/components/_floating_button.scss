@@ -1,12 +1,17 @@
 
 .FloatingButton {
   position: fixed;
+  display: inline-flex;
   bottom: 2em;
   right: 2em;
   width: 3em;
   height: 3em;
   border-radius: 50%;
   border: 1px solid gray;
+  background-color: var(--contrast-0);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 
   & i {
     font-size: 1.5em;

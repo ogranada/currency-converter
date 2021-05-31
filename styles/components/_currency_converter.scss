@@ -10,6 +10,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    overflow-x: hidden;
   }
 
   &::before {
@@ -37,7 +38,7 @@
   }
 
   &-source, &-target {
-    flex-basis: 42%;
+    flex-basis: 41%;
     display: flex;
     flex-wrap: wrap;
   }
