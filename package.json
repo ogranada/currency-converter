@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html && mv dist docs",
     "test": "echo \"TODO: you need to implement testing for this project :'(\" && exit 1"
   },
   "keywords": [
