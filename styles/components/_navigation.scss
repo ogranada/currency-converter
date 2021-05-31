@@ -1,0 +1,35 @@
+
+.Navigation {
+  position: relative;
+  padding: em(5) em(20);
+  box-sizing: border-box;
+  height: em(48);
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 1px 4px gray;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-logo {
+    margin: 0;
+    font-size: 1.5em;
+  }
+
+  &-title {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 1.4em;
+  }
+
+}
+
+@include darkModeScope {
+  .Navigation {
+    box-shadow: none;
+    box-shadow: 0 1px 4px rgba(200, 200, 200, 0.3);
+    &-logo, &-title {
+      color: white;
+    }
+  }
+}

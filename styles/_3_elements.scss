@@ -2,8 +2,29 @@
 :root {
   font-size: $browser-context * 1px;
   font-family: 'Open Sans', sans-serif;
+  background-color: var(--bg-4);
+  --bg-1: #{$gray-1};
+  --bg-2: #{$gray-2};
+  --bg-3: #{$gray-3};
+  --bg-4: #{$gray-4};
+  --contrast-0: #{$contrast-0};
+  --contrast-1: #{$contrast-1};
+  --contrast-2: #{$contrast-2};
+  --contrast-3: #{$contrast-3};
+  --contrast-4: #{$contrast-4};
+  --contrast-5: #{$contrast-5};
 }
 
 main {
+    background: var(--bg-2);
+    background: linear-gradient(135deg, var(--bg-1) 10%, var(--bg-2) 30%, var(--bg-3) 60%, var(--bg-4) 80%);
+    transition: background-color .2s ease; // Only for non gradient valid browsers
     min-height: 100vh;
+}
+
+@include darkModeScope {
+  --bg-1: #{$darkblue-1};
+  --bg-2: #{$darkblue-2};
+  --bg-3: #{$darkblue-3};
+  --bg-4: #{$darkblue-4};
 }
