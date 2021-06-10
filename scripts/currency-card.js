@@ -174,16 +174,20 @@ export class CurrencyCard {
     if (sources.includes(uiElement)) {
       const { sourceCurrencyValue, targetCurrencyValue, sourceCurrency, targetCurrency, searchDate } = values;
       const conversion = await this.converter.convert(sourceCurrency, sourceCurrencyValue, targetCurrency, targetCurrencyValue, searchDate);
-      if (conversion) {
+      if (conversion?.ok) {
         values.targetCurrencyValue = conversion.result;
         this.setUIValues(values, uiElement);
+      } else {
+        conversion.error && alert(conversion.error.message);
       }
     } else if (targets.includes(uiElement)) {
       const { sourceCurrencyValue, targetCurrencyValue, sourceCurrency, targetCurrency, searchDate } = values;
       const conversion = await this.converter.convert(targetCurrency, targetCurrencyValue, sourceCurrency, sourceCurrencyValue, searchDate);
-      if (conversion) {
+      if (conversion?.ok) {
         values.sourceCurrencyValue = conversion.result;
         this.setUIValues(values, uiElement);
+      } else {
+        conversion.error && alert(conversion.error.message);
       }
     } else if (others.includes(uiElement)) {
       if (!others.includes(this.lastChanged)) {

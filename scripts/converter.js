@@ -28,15 +28,23 @@ export class Converter extends APIManager {
    * @param {Date|String} date date currency
    * @returns
    */
-  async convert(from, amount, to, amount2, date) {
+  async convert(from, amount, to, amount2, date = new Date()) {
     try {
       if (amount === 0 || !from || !to) {
-        return null;
+        return {
+          of: false
+        };
       }
-      if (!date) {
-        date = new Date();
+      let dateValue = date;
+      if (typeof date !== 'string') {
+        dateValue = date?.toISOString ? date.toISOString().split('T')[0] : date;
       }
-      const dateValue = date && date.toISOString ? date.toISOString().split('T')[0] : date;
+      const now = new Date();
+      const futureCheck = new Date(dateValue);
+      if (futureCheck > now) {
+        throw new Error('Invalid date');
+      }
+
       const euroToCurrency = await this.getInfo(dateValue ? `/${dateValue}` : '/latest', {
         symbols: `${from},${to}`
       });
@@ -51,6 +59,7 @@ export class Converter extends APIManager {
         ? (amount * oneEuroInTargetCurrency / oneEuroInSourceCurrency)
         : 0;
       return {
+        ok: true,
         source: {
           name: from,
           value: oneEuroInSourceCurrency
@@ -64,7 +73,10 @@ export class Converter extends APIManager {
       }
     } catch (error) {
       console.log(error);
-      return null;
+      return {
+        ok: false,
+        error
+      };
     }
   }
 
